@@ -52,4 +52,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Leave::class);
     }
+
+    public function news()
+    {
+        return $this->hasMany(News::class);
+    }
 }

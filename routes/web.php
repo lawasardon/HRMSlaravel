@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\AttendanceController;
@@ -21,6 +22,7 @@ Auth::routes();
 Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/', [StaticPagesController::class, 'showIndex'])->name('home');
+    Route::get('/get/news', [NewsController::class, 'getNewsData'])->name('get.news.data');
 
     Route::group(['middleware' => ['role:admin']], function () {
         Route::get('/aqua/department', [DepartmentController::class, 'showAquaDepartment'])->name('show.aqua.department');
@@ -72,6 +74,12 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/laminin/show/payroll/{id}', [PayrollController::class,'lamininShowEditModal'])->name('laminin.payroll.show');
         Route::get('/laminin/payroll/calculation', [PayrollController::class, 'lamininPayrollCalculation'])->name('laminin.payroll.calculation');
         Route::post('/laminin/store/Payroll', [PayrollController::class, 'lamininStorePayroll'])->name('laminin.store.payroll');
+
+        Route::get('/news/show/create', [NewsController::class, 'showCreate'])->name('show.create.news');
+        Route::post('/news/store', [NewsController::class, 'storeNews'])->name('store.news');
+        // Route::get('/get/news', [NewsController::class, 'getNewsData'])->name('get.news.data');
+
+
 
 
     });

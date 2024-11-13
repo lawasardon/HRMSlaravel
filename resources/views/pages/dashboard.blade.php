@@ -143,15 +143,15 @@
         </div>
     </div> --}}
 
-    <div class="row">
+    <div class="row" id="allNews">
         <div class="col-xl-6 d-flex">
 
             <div class="card flex-fill student-space comman-shadow">
                 <div class="card-header d-flex align-items-center">
                     <h5 class="card-title">Star Students</h5>
                     <ul class="chart-list-out student-ellips">
-                        <li class="star-menus"><a href="javascript:;"><i class="fas fa-ellipsis-v"></i></a>
-                        </li>
+                        {{-- <li class="star-menus"><a href="javascript:;"><i class="fas fa-ellipsis-v"></i></a>
+                        </li> --}}
                     </ul>
                 </div>
                 <div class="card-body">
@@ -260,22 +260,25 @@
                             </tbody>
                         </table>
                     </div>
+                    {{-- @include('components.socials') --}}
                 </div>
+
             </div>
 
         </div>
+
         <div class="col-xl-6 d-flex">
 
             <div class="card flex-fill comman-shadow">
                 <div class="card-header d-flex align-items-center">
-                    <h5 class="card-title ">Student Activity </h5>
+                    <h5 class="card-title ">News </h5>
                     <ul class="chart-list-out student-ellips">
-                        <li class="star-menus"><a href="javascript:;"><i class="fas fa-ellipsis-v"></i></a>
-                        </li>
+                        {{-- <li class="star-menus"><a href="javascript:;"><i class="fas fa-ellipsis-v"></i></a>
+                        </li> --}}
                     </ul>
                 </div>
                 <div class="card-body">
-                    <div class="activity-groups">
+                    {{-- <div class="activity-groups">
                         <div class="activity-awards">
                             <div class="award-boxs">
                                 <img src="{{ asset('admin/assets/img/icons/award-icon-01.svg') }}" alt="Award">
@@ -324,6 +327,26 @@
                                 <span>3 Day ago</span>
                             </div>
                         </div>
+                    </div> --}}
+                    <div class="activity-groups">
+                        <div v-for="data in news" :key="data.id">
+                            <div class="activity-awards">
+                                <div class="award-boxs">
+                                    <img src="{{ asset('admin/assets/img/icons/award-icon-01.svg') }}"
+                                        alt="Award">
+                                </div>
+                                <div class="award-list-outs">
+                                    <h4>@{{ data.user.name }}</h4>
+                                    <h5>@{{ data.description }}</h5>
+                                </div>
+                                <div class="award-time-list">
+                                    <span>@{{ data.created_at }}</span>
+                                </div>
+                            </div>
+                            <div class="image-posted" align="center">
+                                <img :src="getImageUrl(data.image)">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -331,50 +354,54 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-xl-3 col-sm-6 col-12">
-            <div class="card flex-fill fb sm-box">
-                <div class="social-likes">
-                    <p>Like us on facebook</p>
-                    <h6>50,095</h6>
-                </div>
-                <div class="social-boxs">
-                    <img src="{{ asset('admin/assets/img/icons/social-icon-01.svg') }}" alt="Social Icon">
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-sm-6 col-12">
-            <div class="card flex-fill twitter sm-box">
-                <div class="social-likes">
-                    <p>Follow us on twitter</p>
-                    <h6>48,596</h6>
-                </div>
-                <div class="social-boxs">
-                    <img src="{{ asset('admin/assets/img/icons/social-icon-02.svg') }}" alt="Social Icon">
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-sm-6 col-12">
-            <div class="card flex-fill insta sm-box">
-                <div class="social-likes">
-                    <p>Follow us on instagram</p>
-                    <h6>52,085</h6>
-                </div>
-                <div class="social-boxs">
-                    <img src="{{ asset('admin/assets/img/icons/social-icon-03.svg') }}" alt="Social Icon">
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-sm-6 col-12">
-            <div class="card flex-fill linkedin sm-box">
-                <div class="social-likes">
-                    <p>Follow us on linkedin</p>
-                    <h6>69,050</h6>
-                </div>
-                <div class="social-boxs">
-                    <img src="{{ asset('admin/assets/img/icons/social-icon-04.svg') }}" alt="Social Icon">
-                </div>
-            </div>
-        </div>
-    </div>
+    {{-- @include('components.socials') --}}
 </div>
+
+@push('js')
+    <script>
+        new Vue({
+            el: '#allNews',
+            data: {
+                news: [],
+            },
+            mounted() {
+                this.allNews();
+            },
+            methods: {
+                allNews() {
+                    axios.get("{{ route('get.news.data') }}")
+                        .then(response => {
+                            this.news = response.data;
+                        })
+                        .catch(error => {
+                            console.error('Error fetching news', error.response ? error.response.data :
+                                error);
+                        });
+                },
+
+                getImageUrl(imageName) {
+                    return `/storage/news_images/${imageName}`; // Assumes the 'news_images' folder is in 'public'
+                }
+            }
+        });
+    </script>
+@endpush
+
+@push('css')
+    <style>
+        .image-posted img {
+            height: auto;
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 60px
+        }
+
+        /* .award-boxs img{
+                width: 100%;
+            } */
+
+        .award-list-outs h5 {
+            max-width: 509px;
+        }
+    </style>
+@endpush

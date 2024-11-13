@@ -176,6 +176,17 @@
                         </ul>
                     </li>
                 @endhasrole
+                @hasrole('admin|hr')
+                    <li class="submenu {{ request()->routeIs('show.create.news', '', '') ? 'active' : '' }}">
+                        <a href="#"><i class="far fa-newspaper"></i> <span> News</span> <span
+                                class="menu-arrow"></span></a>
+                        <ul>
+                            <li><a href="{{ route('show.create.news') }}"
+                                    class="{{ request()->routeIs('show.create.news') ? 'active' : '' }}">Create a Post</a>
+                            </li>
+                        </ul>
+                    </li>
+                @endhasrole
                 {{-- @hasrole('admin|hr')
                     <li class="submenu">
                         <a href="#"><i class="fas fa-users"></i> <span> Assets</span> <span
