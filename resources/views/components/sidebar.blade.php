@@ -133,6 +133,18 @@
                             @endif
                         </ul>
                     </li>
+                    <li class="submenu {{ request()->routeIs('create.loan', 'my.loans', '') ? 'active' : '' }}">
+                        <a href="#"><i class="far fa-newspaper"></i> <span> Loan</span> <span
+                                class="menu-arrow"></span></a>
+                        <ul>
+                            <li><a href="{{ route('create.loan') }}"
+                                    class="{{ request()->routeIs('create.loan') ? 'active' : '' }}">Create a Loan</a>
+                            </li>
+                            <li><a href="{{ route('my.loans') }}"
+                                    class="{{ request()->routeIs('my.loans') ? 'active' : '' }}">My Loans</a>
+                            </li>
+                        </ul>
+                    </li>
                 @endhasrole
                 @hasrole('admin')
                     <li class="submenu">
@@ -163,20 +175,32 @@
                     </li>
                 @endhasrole
                 @hasrole('admin|hr|employee')
-                    <li class="submenu">
-                        <a href="#"><i class="fas fa-file-invoice-dollar"></i> <span> Loan</span> <span
+                    {{-- <li class="submenu {{ request()->routeIs('create.loan', 'my.loans', '') ? 'active' : '' }}">
+                        <a href="#"><i class="far fa-newspaper"></i> <span> Loan</span> <span
                                 class="menu-arrow"></span></a>
                         <ul>
-                            <li><a href="fees-collections.html">Fees Collection</a></li>
-                            <li><a href="expenses.html">Expenses</a></li>
-                            <li><a href="salary.html">Salary</a></li>
-                            <li><a href="add-fees-collection.html">Add Fees</a></li>
-                            <li><a href="add-expenses.html">Add Expenses</a></li>
-                            <li><a href="add-salary.html">Add Salary</a></li>
+                            <li><a href="{{ route('create.loan') }}"
+                                    class="{{ request()->routeIs('create.loan') ? 'active' : '' }}">Create a Loan</a>
+                            </li>
+                            <li><a href="{{ route('my.loans') }}"
+                                    class="{{ request()->routeIs('my.loans') ? 'active' : '' }}">My Loans</a>
+                            </li>
                         </ul>
-                    </li>
+                    </li> --}}
                 @endhasrole
                 @hasrole('admin|hr')
+                    <li class="submenu {{ request()->routeIs('show.aqua.loans', 'show.laminin.loans', '') ? 'active' : '' }}">
+                        <a href="#"><i class="far fa-newspaper"></i> <span> Loan</span> <span
+                                class="menu-arrow"></span></a>
+                        <ul>
+                            <li><a href="{{ route('show.aqua.loans') }}"
+                                    class="{{ request()->routeIs('show.aqua.loans') ? 'active' : '' }}">Acqua</a>
+                            </li>
+                            <li><a href="{{ route('show.laminin.loans') }}"
+                                    class="{{ request()->routeIs('show.laminin.loans') ? 'active' : '' }}">Laminin</a>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="submenu {{ request()->routeIs('show.create.news', '', '') ? 'active' : '' }}">
                         <a href="#"><i class="far fa-newspaper"></i> <span> News</span> <span
                                 class="menu-arrow"></span></a>

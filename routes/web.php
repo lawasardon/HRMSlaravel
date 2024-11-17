@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\LoanController;
 use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\AttendanceController;
@@ -65,19 +66,26 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::get('/aqua/payroll', [PayrollController::class, 'showAquaPayroll'])->name('show.aqua.payroll');
         Route::get('/aqua/payroll/data', [PayrollController::class, 'showAquaPayrollData'])->name('show.aqua.payroll.data');
-        Route::get('/aqua/show/payroll/{id}', [PayrollController::class,'aquaShowEditModal'])->name('aqua.payroll.show');
+        Route::get('/aqua/show/payroll/{id}', [PayrollController::class, 'aquaShowEditModal'])->name('aqua.payroll.show');
         Route::get('/aqua/payroll/calculation', [PayrollController::class, 'aquaPayrollCalculation'])->name('aqua.payroll.calculation');
         Route::post('/aqua/store/Payroll', [PayrollController::class, 'aquaStorePayroll'])->name('aqua.store.payroll');
 
         Route::get('/laminin/payroll', [PayrollController::class, 'showLamininPayroll'])->name('show.laminin.payroll');
         Route::get('/laminin/payroll/data', [PayrollController::class, 'showLamininPayrollData'])->name('show.laminin.payroll.data');
-        Route::get('/laminin/show/payroll/{id}', [PayrollController::class,'lamininShowEditModal'])->name('laminin.payroll.show');
+        Route::get('/laminin/show/payroll/{id}', [PayrollController::class, 'lamininShowEditModal'])->name('laminin.payroll.show');
         Route::get('/laminin/payroll/calculation', [PayrollController::class, 'lamininPayrollCalculation'])->name('laminin.payroll.calculation');
         Route::post('/laminin/store/Payroll', [PayrollController::class, 'lamininStorePayroll'])->name('laminin.store.payroll');
 
         Route::get('/news/show/create', [NewsController::class, 'showCreate'])->name('show.create.news');
         Route::post('/news/store', [NewsController::class, 'storeNews'])->name('store.news');
         // Route::get('/get/news', [NewsController::class, 'getNewsData'])->name('get.news.data');
+
+
+        Route::get('/aqua/loans', [LoanController::class, 'showAquaLoans'])->name('show.aqua.loans');
+        Route::get('/aqua/loans/data', [LoanController::class, 'showAquaLoansData'])->name('show.aqua.loans.data');
+
+        Route::get('/laminin/loans', [LoanController::class, 'showLamininLoans'])->name('show.laminin.loans');
+        Route::get('/laminin/loans/data', [LoanController::class, 'showLamininLoansData'])->name('show.laminin.loans.data');
 
 
 
@@ -91,5 +99,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/leave/create', [LeaveController::class, 'createLeave'])->name('employee.leave.create');
         Route::post('/leave/store', [LeaveController::class, 'storeLeave'])->name('employee.leave.store');
 
+        Route::get('/my/loans', [LoanController::class, 'myLoans'])->name('my.loans');
+        Route::get('/my/loans/data', [LoanController::class, 'myLoansData'])->name('my.loans.data');
+        Route::get('/create/loan', [LoanController::class, 'createLoan'])->name('create.loan');
+        Route::post('/store/loan', [LoanController::class, 'storeLoan'])->name('store.loan');
     });
 });
