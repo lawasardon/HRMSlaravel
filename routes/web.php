@@ -83,6 +83,7 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::get('/aqua/loans', [LoanController::class, 'showAquaLoans'])->name('show.aqua.loans');
         Route::get('/aqua/loans/data', [LoanController::class, 'showAquaLoansData'])->name('show.aqua.loans.data');
+        Route::post('/aqua/loans/update/{id}', [LoanController::class, 'updateAuaLoan'])->name('aqua.loan.list.update');
 
         Route::get('/laminin/loans', [LoanController::class, 'showLamininLoans'])->name('show.laminin.loans');
         Route::get('/laminin/loans/data', [LoanController::class, 'showLamininLoansData'])->name('show.laminin.loans.data');

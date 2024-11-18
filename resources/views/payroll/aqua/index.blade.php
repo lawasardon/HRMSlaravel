@@ -59,6 +59,11 @@
                     </select>
                 </div>
 
+                <div class="form-group" hidden>
+                    <label class="col-form-label">Deduction Per Salary:</label>
+                    <input type="text" class="form-control" v-model="employeePayroll.loan">
+                </div>
+
                 <div class="form-group">
                     <label class="col-form-label">Salary:</label>
                     <input type="text" class="form-control" v-model="employeePayroll.salary" disabled>
@@ -139,6 +144,7 @@
                     employee_id: '',
                     id_number: '',
                     name: '',
+                    loan: 0,
                     salary: 0,
                     status: '',
                     over_time: 0,
@@ -216,6 +222,7 @@
                         employee_id: this.employeePayroll.employee_id,
                         id_number: this.employeePayroll.id_number,
                         duration: this.employeePayroll.duration,
+                        deduction_per_salary: this.employeePayroll.loan,
                         salary: this.employeePayroll.salary,
                         over_time: this.employeePayroll.over_time,
                         total_deduction: this.employeePayroll.total_gov_deduction,

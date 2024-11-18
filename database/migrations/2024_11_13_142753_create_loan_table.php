@@ -26,6 +26,7 @@ class CreateLoanTable extends Migration
             $table->string('reason_of_loan');
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->enum('remarks', ['pending', 'paid'])->default('pending');
+            $table->string('reason_of_rejection')->nullable();
             $table->timestamps();
 
             $table->foreign('employee_id')->references('id')->on('employee')->onDelete('cascade');

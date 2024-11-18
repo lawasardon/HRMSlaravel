@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Loan;
 use Illuminate\Http\Request;
+use App\Mail\LoanStatusApproved;
+use App\Mail\LoanStatusRejected;
+use Illuminate\Support\Facades\Mail;
 
 class LoanController extends Controller
 {
@@ -99,5 +102,32 @@ class LoanController extends Controller
 
         return response()->json($aquaLoans);
     }
+
+    public function updateAuaLoan(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'status' => 'required|string',
+            'reason_of_rejection' => 'nullable|string',
+        ]);
+
+        $loan = Loan::findOrFail($id);
+        $loan->update($validatedData);
+
+        $status = $validatedData['status'];
+        $reason_of_rejection = $validatedData['reason_of_rejection'] ?? null;
+
+        if ($status == 'approved') {
+            Mail::to($loan->employee)->send(new LoanStatusApproved($loan, $reason_of_rejection));
+
+        }
+
+        if ($status == 'rejected') {
+            Mail::to($loan->employee)->send(new LoanStatusRejected($loan, $reason_of_rejection));
+
+        }
+
+        return response()->json(['message' => 'Loan updated successfully', 'employee' => $loan], 200);
+    }
+
 
 }

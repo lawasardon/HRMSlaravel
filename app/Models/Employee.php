@@ -53,4 +53,10 @@ class Employee extends Model
     {
         return $this->hasMany(Attendance::class, 'id_number', 'id_number');
     }
+
+    public function loan()
+    {
+        return $this->hasOne(Loan::class, 'id_number', 'id_number');
+    }
+
 }

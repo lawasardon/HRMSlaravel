@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Loan;
 use Carbon\Carbon;
 use App\Models\Payroll;
 use App\Mail\SalaryPaid;
 use App\Models\Employee;
 use App\Models\Deduction;
 use App\Models\Attendance;
+use App\Models\LoanPayment;
 use Illuminate\Http\Request;
 use App\Models\EmployeeRates;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class PayrollController extends Controller
@@ -113,7 +116,14 @@ class PayrollController extends Controller
     {
         $aquaAttendance = Attendance::with([
             'employee' => function ($query) {
-                $query->with(['employeeRate', 'deduction']);
+                $query->with([
+                    'employeeRate',
+                    'deduction',
+                    'loan' => function ($q) {
+                        $q->where('status', 'approved');
+                        $q->where('remarks', 'pending');
+                    }
+                ]);
             }
         ])
             ->where('department', 'aqua')
@@ -157,6 +167,12 @@ class PayrollController extends Controller
                 $govDeduction = Deduction::where('id_number', $attendance->id_number)->first();
                 $employeeId = Employee::where('id_number', $attendance->id_number)->first();
 
+                // Directly query the loan table to ensure we get the data
+                $loan = Loan::where('id_number', $attendance->id_number)
+                    ->where('status', 'approved')
+                    ->where('remarks', 'pending')
+                    ->first();
+
                 $payrollStatus = Payroll::where('id_number', $attendance->id_number)
                     ->where('duration', $durationString)
                     ->first();
@@ -170,15 +186,11 @@ class PayrollController extends Controller
                     ->whereBetween('date', [$periodStart->format('Y-m-d'), $periodEnd->format('Y-m-d')])
                     ->count();
 
-                // $workingDays = 0;
-                // $currentDate = $periodStart->copy();
-
-                // while ($currentDate <= $periodEnd) {
-                //     if ($currentDate->isWeekday()) {
-                //         $workingDays++;
-                //     }
-                //     $currentDate->addDay();
-                // }
+                // Get total loan amount if exists
+                $loanAmount = 0;
+                if ($loan) {
+                    $loanAmount = $loan->deduction_per_salary;
+                }
 
                 $summarizedData[$key] = [
                     'employee_id' => $employeeId ? $employeeId->id : null,
@@ -191,7 +203,7 @@ class PayrollController extends Controller
                     'over_time' => 0,
                     'total_gov_deduction' => $totalGovDeduction,
                     'late' => 0,
-                    'loan' => 0,
+                    'loan' => $loanAmount,
                     'salary' => 0,
                     'duration' => $durationString,
                     'status' => $payrollStatus ? $payrollStatus->status : 'pending',
@@ -211,6 +223,7 @@ class PayrollController extends Controller
             $baseSalary = $data['rate_perday'] * $data['total_working_days'];
             $lateDeduction = $data['late'] * 10;
             $govDeduction = $data['total_gov_deduction'];
+            $loanDeduction = $data['loan'];
 
             $overtimePay = 0;
             if ($data['over_time'] > 0) {
@@ -219,7 +232,7 @@ class PayrollController extends Controller
                 $overtimePay = $overtimeRate * $data['over_time'];
             }
 
-            $data['salary'] = round($baseSalary + $overtimePay - $lateDeduction - $govDeduction, 2);
+            $data['salary'] = round($baseSalary + $overtimePay - $lateDeduction - $govDeduction - $loanDeduction, 2);
         }
 
         return response()->json(array_values($summarizedData));
@@ -235,12 +248,16 @@ class PayrollController extends Controller
             'salary' => 'required|numeric',
             'over_time' => 'nullable|numeric',
             'total_deduction' => 'nullable|numeric',
+            'deduction_per_salary' => 'nullable|numeric',
             'status' => 'required|string|in:pending,paid,hold',
         ]);
 
         try {
             $hourlyRate = $request->salary / 160;
             $overtimeEarnings = ($hourlyRate * 1.25) * ($request->over_time ?? 0);
+
+            // Begin transaction
+            DB::beginTransaction();
 
             $payroll = Payroll::updateOrCreate(
                 [
@@ -259,17 +276,46 @@ class PayrollController extends Controller
                 ]
             );
 
+            $activeLoan = Loan::where('id_number', $request->id_number)
+                ->where('status', 'approved')
+                ->where('remarks', 'pending')
+                ->first();
+
+            if ($activeLoan) {
+                $loanPayment = LoanPayment::create([
+                    'employee_id' => $request->employee_id,
+                    'id_number' => $request->id_number,
+                    'loan_id' => $activeLoan->id,
+                    'amount' => $request->deduction_per_salary,
+                    'payment_date' => now(),
+                    'payment_type' => 'salary_deduction',
+                    'remarks' => 'Salary Deduction for ' . $request->duration,
+                    'status' => 'paid'
+                ]);
+
+                $totalPaidAmount = LoanPayment::where('loan_id', $activeLoan->id)
+                    ->sum('amount');
+
+                if ($totalPaidAmount >= $activeLoan->total) {
+                    $activeLoan->update(['status' => 'paid']);
+                }
+            }
+
             $employee = Employee::findOrFail($request->employee_id);
 
             if ($request->status === 'paid') {
                 Mail::to($employee->email)->send(new SalaryPaid($employee, $request->duration, $request->salary, $request->id_number));
             }
 
+            DB::commit();
+
             return response()->json([
                 'message' => 'Updated successfully',
                 'payroll' => $payroll
             ], 200);
         } catch (\Exception $e) {
+            DB::rollBack();
+
             return response()->json([
                 'message' => 'Error updating payroll',
                 'error' => $e->getMessage()

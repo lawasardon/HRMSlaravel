@@ -23,9 +23,16 @@ class Loan extends Model
             'terms_of_loan',
             'deduction_per_salary',
             'reason_of_loan',
+            'reason_of_rejection',
         ];
 
-        public function employee(){
-            return $this->belongsTo(Employee::class);
-        }
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(LoanPayment::class, 'id_number');
+    }
 }
