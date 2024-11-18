@@ -74,10 +74,12 @@
                                 <div class="col">
                                     <h3 class="page-title">Aqua Loans</h3>
                                 </div>
-                                <div class="col-auto text-end float-end ms-auto download-grp">
-                                    <a href="{{ route('employee.leave.create') }}" class="btn btn-primary"><i
-                                            class="fas fa-plus"></i> Add New</a>
-                                </div>
+                                @hasrole('employee')
+                                    <div class="col-auto text-end float-end ms-auto download-grp">
+                                        <a href="{{ route('employee.leave.create') }}" class="btn btn-primary"><i
+                                                class="fas fa-plus"></i> Add New</a>
+                                    </div>
+                                @endhasrole
                             </div>
                         </div>
 
@@ -120,14 +122,14 @@
                                             </span>
                                         </td>
                                         @hasrole('hr')
-                                        <td :hidden="data.status === 'approved' || data.status === 'rejected'">
-                                            <div class="actions">
-                                                <a href="javascript:;" class="btn btn-sm bg-danger-light"
-                                                    @click="openEditModal(data)">
-                                                    <i class="feather-edit"></i>
-                                                </a>
-                                            </div>
-                                        </td>
+                                            <td :hidden="data.status === 'approved' || data.status === 'rejected'">
+                                                <div class="actions">
+                                                    <a href="javascript:;" class="btn btn-sm bg-danger-light"
+                                                        @click="openEditModal(data)">
+                                                        <i class="feather-edit"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
                                         @endhasrole
                                     </tr>
                                 </tbody>

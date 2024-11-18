@@ -2,7 +2,7 @@
 
     <div class="header-left">
         <a href="/" class="logo">
-            <img src="{{ asset('admin/assets/img/hrlogo.png') }}" alt="Logo">
+            <img src="{{ asset('admin/assets/img/hrlogo1.png') }}" alt="Logo">
         </a>
         <a href="/" class="logo logo-small">
             <img src="{{ asset('admin/assets/img/hr-small-logo.png') }}" alt="Logo" width="30" height="30">
@@ -173,3 +173,6 @@
     </ul>
 
 </div>
+
+<script src="{{ asset('admin/assets/js/jquery-3.6.0.min.js') }}"></script>
+<script src="{{ asset('admin/assets/js/script.js') }}"></script>

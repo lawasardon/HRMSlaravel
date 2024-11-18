@@ -90,7 +90,8 @@
                                         <td>@{{ data.department }}</td>
                                         <td>@{{ formatDate(data.date) }}</td>
                                         <td>@{{ data.time_in }}</td>
-                                        <td>@{{ data.time_out }}</td>
+                                        {{-- <td>@{{ data.time_out }}</td> --}}
+                                        <td>@{{ formatTimeTo12Hour(data.time_out) }}</td>
                                         <td>
                                             <span :class="getAttendanceStatus(data.status)">
                                                 @{{ data.status }}
@@ -156,6 +157,19 @@
                         day: 'numeric'
                     };
                     return new Date(dateString).toLocaleDateString('en-US', options);
+                },
+                formatTimeTo12Hour(timeString) {
+                    const timeParts = timeString.split(':');
+                    const date = new Date();
+                    date.setHours(timeParts[0]);
+                    date.setMinutes(timeParts[1]);
+
+                    const options = {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true
+                    };
+                    return date.toLocaleTimeString('en-US', options);
                 },
             }
         });

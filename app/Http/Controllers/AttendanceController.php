@@ -71,4 +71,26 @@ class AttendanceController extends Controller
         $lamininAttendance = Attendance::where('department', 'laminin')->get();
         return response()->json($lamininAttendance);
     }
+
+
+
+
+
+
+
+    //EMPLOYEE
+    public function myAttendance()
+    {
+        $userId = auth()->user()->employee->id_number;
+        $month = now()->month;
+        $year = now()->year;
+
+        $attendance = Attendance::where('id_number', $userId)
+            ->whereMonth('date', $month)
+            ->whereYear('date', $year)
+            ->get()
+            ->keyBy('date');
+
+        return view('attendance.employee.index', compact('attendance', 'month', 'year'));
+    }
 }

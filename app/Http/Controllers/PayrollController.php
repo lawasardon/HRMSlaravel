@@ -345,8 +345,19 @@ class PayrollController extends Controller
     public function lamininPayrollCalculation()
     {
         $lamininAttendance = Attendance::with([
+            //     'employee' => function ($query) {
+            //         $query->with(['employeeRate', 'deduction']);
+            //     }
+            // ])
             'employee' => function ($query) {
-                $query->with(['employeeRate', 'deduction']);
+                $query->with([
+                    'employeeRate',
+                    'deduction',
+                    'loan' => function ($q) {
+                        $q->where('status', 'approved');
+                        $q->where('remarks', 'pending');
+                    }
+                ]);
             }
         ])
             ->where('department', 'laminin')
@@ -390,6 +401,12 @@ class PayrollController extends Controller
                 $govDeduction = Deduction::where('id_number', $attendance->id_number)->first();
                 $employeeId = Employee::where('id_number', $attendance->id_number)->first();
 
+                // Directly query the loan table to ensure we get the data
+                $loan = Loan::where('id_number', $attendance->id_number)
+                    ->where('status', 'approved')
+                    ->where('remarks', 'pending')
+                    ->first();
+
                 $payrollStatus = Payroll::where('id_number', $attendance->id_number)
                     ->where('duration', $durationString)
                     ->first();
@@ -402,6 +419,11 @@ class PayrollController extends Controller
                 $workingDays = Attendance::where('id_number', $attendance->id_number)
                     ->whereBetween('date', [$periodStart->format('Y-m-d'), $periodEnd->format('Y-m-d')])
                     ->count();
+
+                $loanAmount = 0;
+                if ($loan) {
+                    $loanAmount = $loan->deduction_per_salary;
+                }
 
                 // $workingDays = 0;
                 // $currentDate = $periodStart->copy();
@@ -424,7 +446,7 @@ class PayrollController extends Controller
                     'over_time' => 0,
                     'total_gov_deduction' => $totalGovDeduction,
                     'late' => 0,
-                    'loan' => 0,
+                    'loan' => $loanAmount,
                     'salary' => 0,
                     'duration' => $durationString,
                     'status' => $payrollStatus ? $payrollStatus->status : 'pending',
@@ -444,6 +466,7 @@ class PayrollController extends Controller
             $baseSalary = $data['rate_perday'] * $data['total_working_days'];
             $lateDeduction = $data['late'] * 10;
             $govDeduction = $data['total_gov_deduction'];
+            $loanDeduction = $data['loan'];
 
             $overtimePay = 0;
             if ($data['over_time'] > 0) {
@@ -452,7 +475,7 @@ class PayrollController extends Controller
                 $overtimePay = $overtimeRate * $data['over_time'];
             }
 
-            $data['salary'] = round($baseSalary + $overtimePay - $lateDeduction - $govDeduction, 2);
+            $data['salary'] = round($baseSalary + $overtimePay - $lateDeduction - $govDeduction - $loanDeduction, 2);
         }
 
         return response()->json(array_values($summarizedData));
@@ -468,6 +491,7 @@ class PayrollController extends Controller
             'salary' => 'required|numeric',
             'over_time' => 'nullable|numeric',
             'total_deduction' => 'nullable|numeric',
+            'deduction_per_salary' => 'nullable|numeric',
             'status' => 'required|string|in:pending,paid,hold',
         ]);
 
@@ -491,6 +515,31 @@ class PayrollController extends Controller
                     'over_time' => $overtimeEarnings,
                 ]
             );
+
+            $activeLoan = Loan::where('id_number', $request->id_number)
+                ->where('status', 'approved')
+                ->where('remarks', 'pending')
+                ->first();
+
+            if ($activeLoan) {
+                $loanPayment = LoanPayment::create([
+                    'employee_id' => $request->employee_id,
+                    'id_number' => $request->id_number,
+                    'loan_id' => $activeLoan->id,
+                    'amount' => $request->deduction_per_salary,
+                    'payment_date' => now(),
+                    'payment_type' => 'salary_deduction',
+                    'remarks' => 'Salary Deduction for ' . $request->duration,
+                    'status' => 'paid'
+                ]);
+
+                $totalPaidAmount = LoanPayment::where('loan_id', $activeLoan->id)
+                    ->sum('amount');
+
+                if ($totalPaidAmount >= $activeLoan->total) {
+                    $activeLoan->update(['status' => 'paid']);
+                }
+            }
 
             $employee = Employee::findOrFail($request->employee_id);
 

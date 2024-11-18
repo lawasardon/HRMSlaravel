@@ -71,11 +71,12 @@
                                 class="table border-0 star-student table-hover table-center mb-0 datatable table-striped">
                                 <thead class="student-thread">
                                     <tr>
-                                        <th>
+                                        {{-- <th>
                                             <div class="form-check check-tables">
                                                 <input class="form-check-input" type="checkbox" value="something">
                                             </div>
-                                        </th>
+                                        </th> --}}
+                                        <th>ID</th>
                                         <th>Department</th>
                                         <th>Name</th>
                                         <th>Email</th>
@@ -89,11 +90,12 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="data in employeeList" :key="data.id">
-                                        <td>
+                                        {{-- <td>
                                             <div class="form-check check-tables">
                                                 <input class="form-check-input" type="checkbox" value="something">
                                             </div>
-                                        </td>
+                                        </td> --}}
+                                        <td>@{{ data.id_number }}</td>
                                         <td>
                                             <h2 class="table-avatar">
                                                 {{-- <a href="student-details.html" class="avatar avatar-sm me-2"><img

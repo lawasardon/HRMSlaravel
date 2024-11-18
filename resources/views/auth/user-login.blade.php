@@ -4,8 +4,9 @@
     <div class="login-wrapper">
         <div class="container">
             <div class="loginbox">
-                <div class="login-left">
-                    <img class="img-fluid" src="{{ asset('admin/assets/img/login.png') }}" alt="Logo">
+                <div class="login-left" style="box-shadow: 5px 0px 15px rgba(0, 0, 0, 0.10);">
+                    <img class="img-fluid" src="{{ asset('admin/assets/img/hr-login.png') }}" alt="Logo"
+                        style="margin-bottom: 30px">
                 </div>
                 <div class="login-right">
                     <div class="login-right-wrap">
@@ -82,3 +83,13 @@
 </div>
 
 @include('layouts.include.script')
+
+<style>
+    .login-wrapper .loginbox .login-left {
+        background-color: #fff;
+    }
+
+    .login-wrapper .loginbox .login-left:after {
+        display: none ;
+    }
+</style>

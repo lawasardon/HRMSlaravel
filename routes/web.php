@@ -104,5 +104,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/my/loans/data', [LoanController::class, 'myLoansData'])->name('my.loans.data');
         Route::get('/create/loan', [LoanController::class, 'createLoan'])->name('create.loan');
         Route::post('/store/loan', [LoanController::class, 'storeLoan'])->name('store.loan');
+
+        Route::get('/my/attendance', [AttendanceController::class, 'myAttendance'])->name('my.attendance');
+
     });
 });

@@ -68,7 +68,7 @@
                         </ul>
                     </li>
                 @endhasrole --}}
-                @hasrole('admin|hr')
+                @hasrole('hr')
                     <li
                         class="submenu {{ request()->routeIs('attendance.list.all.employee', 'attendance.list.aqua', 'attendance.list.laminin') ? 'active' : '' }}">
                         <a href="#"><i class="far fa-calendar-check"></i> <span> Attendance</span> <span
@@ -93,11 +93,12 @@
                     </li>
                 @endhasrole
                 @hasrole('employee')
-                    <li class="submenu {{ request()->routeIs(' ', '') ? 'active' : '' }}">
+                    <li class="submenu {{ request()->routeIs('my.attendance', '') ? 'active' : '' }}">
                         <a href="#"><i class="far fa-calendar-check"></i> <span> Attendance</span> <span
                                 class="menu-arrow"></span></a>
                         <ul>
-                            <li><a href="#" class=" ">My Attendance</a>
+                            <li><a href="{{ route('my.attendance') }}"
+                                    class="{{ request()->routeIs('my.attendance') ? 'active' : '' }}">My Attendance</a>
                             </li>
                         </ul>
                     </li>
@@ -146,7 +147,7 @@
                         </ul>
                     </li>
                 @endhasrole
-                @hasrole('admin')
+                {{-- @hasrole('admin')
                     <li class="submenu">
                         <a href="#"><i class="fas fa-book-reader"></i> <span> Projects</span> <span
                                 class="menu-arrow"></span></a>
@@ -156,8 +157,8 @@
                             <li><a href="edit-subject.html">Subject Edit</a></li>
                         </ul>
                     </li>
-                @endhasrole
-                @hasrole('admin|hr')
+                @endhasrole --}}
+                @hasrole('hr')
                     <li
                         class="submenu {{ request()->routeIs('show.aqua.payroll', 'show.laminin.payroll', 'show.all.employee.rates') ? 'active' : '' }}">
                         <a href="#"><i class="fas fa-file-invoice-dollar"></i> <span> Payroll</span> <span
@@ -188,8 +189,9 @@
                         </ul>
                     </li> --}}
                 @endhasrole
-                @hasrole('admin|hr')
-                    <li class="submenu {{ request()->routeIs('show.aqua.loans', 'show.laminin.loans', '') ? 'active' : '' }}">
+                @hasrole('hr')
+                    <li
+                        class="submenu {{ request()->routeIs('show.aqua.loans', 'show.laminin.loans', '') ? 'active' : '' }}">
                         <a href="#"><i class="far fa-newspaper"></i> <span> Loan</span> <span
                                 class="menu-arrow"></span></a>
                         <ul>

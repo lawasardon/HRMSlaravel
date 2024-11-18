@@ -24,7 +24,7 @@
                                     <h3 class="page-title">My Loans</h3>
                                 </div>
                                 <div class="col-auto text-end float-end ms-auto download-grp">
-                                    <a href="{{ route('employee.leave.create') }}" class="btn btn-primary"><i
+                                    <a href="{{ route('create.loan') }}" class="btn btn-primary"><i
                                             class="fas fa-plus"></i> Add New</a>
                                 </div>
                             </div>

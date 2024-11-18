@@ -5,10 +5,10 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Aqua Loans</h3>
+                    <h3 class="page-title">Laminin Loans</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Aqua Loans</li>
+                        <li class="breadcrumb-item active">Laminin Loans</li>
                     </ul>
                 </div>
             </div>
@@ -21,12 +21,14 @@
                         <div class="page-header">
                             <div class="row align-items-center">
                                 <div class="col">
-                                    <h3 class="page-title">Aqua Loans</h3>
+                                    <h3 class="page-title">Laminin Loans</h3>
                                 </div>
-                                <div class="col-auto text-end float-end ms-auto download-grp">
-                                    <a href="{{ route('employee.leave.create') }}" class="btn btn-primary"><i
-                                            class="fas fa-plus"></i> Add New</a>
-                                </div>
+                                @hasrole('employee')
+                                    <div class="col-auto text-end float-end ms-auto download-grp">
+                                        <a href="{{ route('employee.leave.create') }}" class="btn btn-primary"><i
+                                                class="fas fa-plus"></i> Add New</a>
+                                    </div>
+                                @endhasrole
                             </div>
                         </div>
 

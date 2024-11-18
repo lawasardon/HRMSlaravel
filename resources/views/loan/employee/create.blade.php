@@ -59,8 +59,18 @@
                                         <label>Terms of Loan <span class="text-danger">*</span></label>
                                         <select class="form-control" v-model="terms_of_loan" required>
                                             <option value="" disabled>Select Terms of Loan</option>
+                                            <option value="1">1 Month</option>
+                                            <option value="2">2 Months</option>
                                             <option value="3">3 Months</option>
+                                            <option value="4">4 Months</option>
+                                            <option value="5">5 Months</option>
                                             <option value="6">6 Months</option>
+                                            <option value="7">7 Months</option>
+                                            <option value="8">8 Months</option>
+                                            <option value="9">9 Months</option>
+                                            <option value="10">10 Months</option>
+                                            <option value="11">11 Months</option>
+                                            <option value="12">12 Months</option>
                                             <option value="9">9 Months</option>
                                             <option value="12">12 Months</option>
                                         </select>
@@ -173,7 +183,7 @@
                                 allowEscapeKey: false,
                             }).then(() => {
                                 window.location.href =
-                                    `/loan/list`; // Adjust the redirect to your list page.
+                                    `/my/loans`;
                             });
                         })
                         .catch(error => {
