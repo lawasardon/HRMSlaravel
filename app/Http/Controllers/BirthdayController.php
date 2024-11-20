@@ -10,7 +10,7 @@ class BirthdayController extends Controller
     public function birthdayData()
     {
         $currentMonth = now()->month;
-        $birthdays = Employee::whereMonth('birthday', $currentMonth)->get();
+        $birthdays = Employee::with('user')->whereMonth('birthday', $currentMonth)->get();
         return response()->json($birthdays);
     }
 

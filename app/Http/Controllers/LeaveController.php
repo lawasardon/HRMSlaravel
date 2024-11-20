@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\LeaveStatusApproved;
+use App\Mail\LeaveStatusRejected;
 use App\Models\Leave;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 
 class LeaveController extends Controller
@@ -43,22 +46,69 @@ class LeaveController extends Controller
             'reason_of_rejection' => 'nullable|string',
         ]);
 
+        // Fetch the leave record
         $leave = Leave::findOrFail($id);
+
+        // Get user directly from leave
+        $user = $leave->user;
+
+        if ($user) {
+            $email = $user->email;
+
+            // Use null coalescing operator to provide a default empty string
+            $reasonOfRejection = $request->input('reason_of_rejection', '');
+
+            // Send mail based on leave status
+            if ($request->status === 'approved') {
+                Mail::to($email)->send(new LeaveStatusApproved($leave, $reasonOfRejection));
+            }
+
+            if ($request->status === 'rejected') {
+                Mail::to($email)->send(new LeaveStatusRejected($leave, $reasonOfRejection));
+            }
+        } else {
+            return response()->json(['message' => 'No associated user found for this leave'], 400);
+        }
+
+        // Update the leave status and reason of rejection
         $leave->update($validatedData);
 
-        return response()->json(['message' => 'Leave submitted successfully', 'employee' => $leave], 200);
+        return response()->json(['message' => 'Leave updated successfully', 'leave' => $leave], 200);
     }
 
     public function lamininLeaveListUpdate(Request $request, $id)
     {
         $validatedData = $request->validate([
             'status' => 'required|string',
+            'reason_of_rejection' => 'nullable|string',
         ]);
 
+        // Fetch the leave record
         $leave = Leave::findOrFail($id);
+
+        // Get user directly from leave
+        $user = $leave->user;
+
+        if ($user) {
+            $email = $user->email;
+
+            // Send mail based on leave status
+            if ($request->status === 'approved') {
+                Mail::to($email)->send(new LeaveStatusApproved($leave, $validatedData['reason_of_rejection']));
+            }
+
+            if ($request->status === 'rejected') {
+                Mail::to($email)->send(new LeaveStatusRejected($leave, $validatedData['reason_of_rejection']));
+            }
+        } else {
+            return response()->json(['message' => 'No associated user found for this leave'], 400);
+        }
+
+        // Update the leave status and reason of rejection
         $leave->update($validatedData);
 
-        return response()->json(['message' => 'Leave submitted successfully', 'employee' => $leave], 200);
+        return response()->json(['message' => 'Leave updated successfully', 'leave' => $leave], 200);
+
     }
 
     public function leaveList()

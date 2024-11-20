@@ -69,9 +69,11 @@
                         <li class="nav-item">
                             <a class="nav-link active" data-bs-toggle="tab" href="#per_details_tab">About</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="#password_tab">Password</a>
-                        </li>
+                        @hasrole('employee')
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#password_tab">Password</a>
+                            </li>
+                        @endhasrole
                     </ul>
                 </div>
                 <div class="tab-content profile-tab-cont">

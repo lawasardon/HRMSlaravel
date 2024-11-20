@@ -40,7 +40,7 @@
             </div>
         </li> --}}
 
-        <li class="nav-item dropdown noti-dropdown me-2">
+        {{-- <li class="nav-item dropdown noti-dropdown me-2">
             <a href="#" class="dropdown-toggle nav-link header-nav-list" data-bs-toggle="dropdown">
                 <img src="{{ asset('admin/assets/img/icons/header-icon-05.svg') }}" alt="">
             </a>
@@ -126,7 +126,7 @@
                     <a href="#">View all Notifications</a>
                 </div>
             </div>
-        </li>
+        </li> --}}
 
         <li class="nav-item zoom-screen me-2">
             <a href="#" class="nav-link header-nav-list win-maximize">
@@ -137,7 +137,8 @@
         <li class="nav-item dropdown has-arrow new-user-menus">
             <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
                 <span class="user-img">
-                    <img class="rounded-circle" src="{{ asset('admin/assets/img/profiles/avatar-01.jpg') }}"
+                    <img class="rounded-circle"
+                        src="{{ asset('storage/user_images/' . (Auth::user()->profile_picture ?? 'admin/assets/img/no_image.jpg')) }}"
                         width="31" alt="Soeng Souy">
                     <div class="user-text">
                         <h6>{{ Auth::user()->name }}</h6>
@@ -148,8 +149,9 @@
             <div class="dropdown-menu">
                 <div class="user-header">
                     <div class="avatar avatar-sm">
-                        <img src="{{ asset('admin/assets/img/profiles/avatar-01.jpg') }}" alt="User Image"
-                            class="avatar-img rounded-circle">
+                        <img src="{{ asset('storage/user_images/' . (Auth::user()->profile_picture ?? 'admin/assets/img/no_image.jpg')) }}"
+                            alt="User Image" class="avatar-img rounded-circle">
+
                     </div>
                     <div class="user-text">
                         <h6>{{ Auth::user()->name }}</h6>
@@ -173,6 +175,6 @@
     </ul>
 
 </div>
-
+{{--
 <script src="{{ asset('admin/assets/js/jquery-3.6.0.min.js') }}"></script>
-<script src="{{ asset('admin/assets/js/script.js') }}"></script>
+<script src="{{ asset('admin/assets/js/script.js') }}"></script> --}}

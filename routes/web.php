@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CountController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NewsController;
@@ -30,6 +31,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/profile/settings/data', [AuthController::class, 'profileSettingsData'])->name('profile.settings.data');
     Route::post('/update/password', [AuthController::class, 'updatePassword'])->name('update.password');
     Route::post('/update/profile/picture', [AuthController::class, 'updateProfilePicture'])->name('update.profile.picture');
+    Route::get('/birthday/data', [BirthdayController::class, 'birthdayData'])->name('birthday.data');
 
     Route::group(['middleware' => ['role:admin']], function () {
         Route::get('/aqua/department', [DepartmentController::class, 'showAquaDepartment'])->name('show.aqua.department');
@@ -97,8 +99,9 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::get('/laminin/loans', [LoanController::class, 'showLamininLoans'])->name('show.laminin.loans');
         Route::get('/laminin/loans/data', [LoanController::class, 'showLamininLoansData'])->name('show.laminin.loans.data');
+        Route::post('/laminin/loans/update/{id}', [LoanController::class, 'updateLamininLoan'])->name('laminin.loan.list.update');
 
-        Route::get('/birthday/data', [BirthdayController::class, 'birthdayData'])->name('birthday.data');
+        Route::get('/count/data', [CountController::class, 'CountData'])->name('count.data');
 
 
     });
