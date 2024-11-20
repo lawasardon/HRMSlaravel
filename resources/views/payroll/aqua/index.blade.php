@@ -99,7 +99,8 @@
                                 <tbody>
                                     <tr v-for="data in payrollData" :id="data.id">
                                         <td>@{{ data.id_number }}</td>
-                                        <td>@{{ data.department_id == 1 ? 'Aqua' : 'Laminin' }}</td>
+                                        {{-- <td>@{{ data.department_id == 1 ? 'Aqua' : 'Laminin' }}</td> --}}
+                                        <td>@{{ departmentName(data) }}</td>
                                         <td>@{{ data.name }}</td>
                                         <td>@{{ data.monthly_rate }}</td>
                                         <td>@{{ data.rate_perday }}</td>
@@ -272,6 +273,16 @@
                             return 'badge badge-danger';
                         default:
                             return '';
+                    }
+                },
+                departmentName(data) {
+                    switch (data.department_id) {
+                        case 1:
+                            return 'Acqua';
+                        case 2:
+                            return 'Laminin';
+                        default:
+                            return data.department_id; // return the original department name for other cases
                     }
                 },
                 formatDate(dateString) {

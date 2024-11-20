@@ -6,10 +6,10 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="page-sub-header">
-                        <h3 class="page-title">Aqua Attendance</h3>
+                        <h3 class="page-title">Acqua Attendance</h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="students.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Aqua Attendance</li>
+                            <li class="breadcrumb-item active">Acqua Attendance</li>
                         </ul>
                     </div>
                 </div>
@@ -87,7 +87,7 @@
                                                 <a href="student-details.html">@{{ data.name }}</a>
                                             </h2>
                                         </td>
-                                        <td>@{{ data.department }}</td>
+                                        <td>@{{ departmentName(data) }}</td>
                                         <td>@{{ formatDate(data.date) }}</td>
                                         <td>@{{ data.time_in }}</td>
                                         {{-- <td>@{{ data.time_out }}</td> --}}
@@ -172,6 +172,17 @@
                     };
                     return date.toLocaleTimeString('en-US', options);
                 },
+
+                departmentName(data) {
+                    switch (data.department) {
+                        case 'aqua':
+                            return 'Acqua';
+                        default:
+                            return data.department; // return the original department name for other cases
+                    }
+                }
+
+
             }
         });
     </script>

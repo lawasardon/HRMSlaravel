@@ -40,7 +40,7 @@
                             <li>
                                 <a href="{{ route('show.aqua.employee.list') }}"
                                     class="{{ request()->routeIs('show.aqua.employee.list') ? 'active' : '' }}">
-                                    Aqua Department
+                                    Acqua Department
                                 </a>
                             </li>
                             <li><a href="{{ route('show.laminin.employee.list') }}"
@@ -78,7 +78,7 @@
                                     class="{{ request()->routeIs('attendance.list.all.employee') ? 'active' : '' }}">List</a>
                             </li>
                             <li><a href="{{ route('attendance.list.aqua') }}"
-                                    class="{{ request()->routeIs('attendance.list.aqua') ? 'active' : '' }}">Aqua</a></li>
+                                    class="{{ request()->routeIs('attendance.list.aqua') ? 'active' : '' }}">Acqua</a></li>
                             <li><a href="{{ route('attendance.list.laminin') }}"
                                     class="{{ request()->routeIs('attendance.list.laminin') ? 'active' : '' }}">Laminin</a>
                             </li>
@@ -109,7 +109,7 @@
                                 class="menu-arrow"></span></a>
                         <ul>
                             <li><a href="{{ route('aqua.leave.list') }}"
-                                    class="{{ request()->routeIs('aqua.leave.list') ? 'active' : '' }}">Aqua
+                                    class="{{ request()->routeIs('aqua.leave.list') ? 'active' : '' }}">Acqua
                                     Leave List</a></li>
                             <li><a href="{{ route('laminin.leave.list') }}"
                                     class="{{ request()->routeIs('laminin.leave.list') ? 'active' : '' }}">Laminin Leave
@@ -177,7 +177,7 @@
                                     class="{{ request()->routeIs('show.all.employee.rates') ? 'active' : '' }}">Employee
                                     Rates</a></li>
                             <li><a href="{{ route('show.aqua.payroll') }}"
-                                    class="{{ request()->routeIs('show.aqua.payroll') ? 'active' : '' }}">Aqua</a></li>
+                                    class="{{ request()->routeIs('show.aqua.payroll') ? 'active' : '' }}">Acqua</a></li>
                             <li><a href="{{ route('show.laminin.payroll') }}"
                                     class="{{ request()->routeIs('show.laminin.payroll') ? 'active' : '' }}">Laminin</a>
                             </li>

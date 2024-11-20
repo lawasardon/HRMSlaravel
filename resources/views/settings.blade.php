@@ -59,7 +59,7 @@
                             <h6 class="text-muted">@{{ accountDetails.email }}</h6>
                             <div class="user-Location"><i class="fas fa-map-marker-alt"></i> @{{ accountDetails.location }}
                             </div>
-                            <div class="about-text">@{{ accountDetails.about }}</div>
+                            {{-- <div class="about-text">@{{ accountDetails.about }}</div> --}}
                         </div>
                     </div>
                 </div>

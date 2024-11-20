@@ -16,10 +16,10 @@ class CountController extends Controller
         $totalDepartment = Department::count();
 
         return response()->json([
-            'countAqua' => $countAqua,
-            'laminin' => $laminin,
-            'totalEmployee' => $totalEmployee,
-            'totalDepartment' => $totalDepartment
+            'Acqua' => $countAqua,
+            'Laminin' => $laminin,
+            'Total Employee' => $totalEmployee,
+            'Total Department' => $totalDepartment
         ]);
     }
 

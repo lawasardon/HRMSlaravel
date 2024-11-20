@@ -5,10 +5,10 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Aqua Leave List Details</h3>
+                    <h3 class="page-title">Acqua Leave List Details</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Aqua Leave List</li>
+                        <li class="breadcrumb-item active">Acqua Leave List</li>
                     </ul>
                 </div>
             </div>
@@ -92,7 +92,8 @@
                                 <tbody>
                                     <tr v-for="data in leaveList" :id="data.id">
                                         <td>@{{ formatDate(data.date_filed) }}</td>
-                                        <td>@{{ data.department.name }}</td>
+                                        {{-- <td>@{{ data.department.name }}</td> --}}
+                                        <td>@{{ departmentName(data) }}</td>
                                         <td>@{{ data.name }}</td>
                                         <td>@{{ formatDate(data.date_start) }}</td>
                                         <td>@{{ formatDate(data.date_end) }}</td>
@@ -220,6 +221,14 @@
                             return 'badge badge-danger';
                         default:
                             return '';
+                    }
+                },
+                departmentName(data) {
+                    switch (data.department.name) {
+                        case 'Aqua':
+                            return 'Acqua';
+                        default:
+                            return data.department.name; // return the original department name for other cases
                     }
                 },
                 formatDate(dateString) {

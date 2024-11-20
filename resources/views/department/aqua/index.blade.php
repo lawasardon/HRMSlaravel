@@ -6,9 +6,9 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="page-sub-header">
-                        <h3 class="page-title">Aqua Department</h3>
+                        <h3 class="page-title">Acqua Department</h3>
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="students.html">Aqua Department</a></li>
+                            <li class="breadcrumb-item"><a href="students.html">Acqua Department</a></li>
                             <li class="breadcrumb-item active">All Employees</li>
                         </ul>
                     </div>
