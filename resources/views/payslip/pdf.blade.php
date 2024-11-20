@@ -62,6 +62,10 @@
         </thead>
         <tbody>
             <tr>
+                <td>Loan</td>
+                <td>{{ $loan->deduction_per_salary }}</td>
+            </tr>
+            <tr>
                 <td>SSS</td>
                 <td>{{ $deductions->sss / 2 }}</td>
             </tr>
@@ -76,7 +80,7 @@
             </tr>
             <tr class="total">
                 <td>Total Deductions</td>
-                <td>{{ $payslip->total_deduction }}</td>
+                <td>{{ $payslip->total_deduction + $loan->deduction_per_salary }}</td>
 
             </tr>
         </tbody>
@@ -85,7 +89,8 @@
     <table>
         <tr class="total">
             <th>Net Pay</th>
-            <td>{{ $payslip->salary - $payslip->total_deduction }}</td>
+            {{-- <td>{{ $payslip->salary - $payslip->total_deduction }}</td> --}}
+            <td>{{ $payslip->salary }}</td>
         </tr>
     </table>
 </body>

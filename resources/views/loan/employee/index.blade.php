@@ -41,6 +41,7 @@
                                         <th>Amount</th>
                                         <th>Interest</th>
                                         <th>Total</th>
+                                        <th>Deduction per Salary</th>
                                         <th>Terms of Loan</th>
                                         <th>Reason of Loan</th>
                                         <th>Status</th>
@@ -55,6 +56,7 @@
                                         <td>@{{ data.amount }}</td>
                                         <td>@{{ data.interest }}</td>
                                         <td>@{{ data.total }}</td>
+                                        <td>@{{ data.deduction_per_salary }}</td>
                                         <td>@{{ data.terms_of_loan }}</td>
                                         <td>@{{ data.reason_of_loan }}</td>
                                         <td>

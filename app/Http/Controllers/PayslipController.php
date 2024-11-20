@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Deduction;
+use App\Models\Loan;
 use App\Models\Payroll;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -33,13 +34,17 @@ class PayslipController extends Controller
         $deductions = Deduction::where('id_number', $userId)
             ->firstOrFail();
 
+        $loan = Loan::where('id_number', $userId)
+            ->firstOrFail();
+
 
         $employee = auth()->user()->employee;
 
         $pdf = PDF::loadView('payslip.pdf', [
             'payslip' => $payslip,
             'deductions' => $deductions,
-            'employee' => $employee
+            'employee' => $employee,
+            'loan' => $loan
         ]);
 
         return $pdf->download("payslip_{$duration}.pdf");
