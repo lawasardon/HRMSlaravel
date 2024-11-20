@@ -51,7 +51,7 @@
                     <div class="card-body">
                         <div class="db-widgets d-flex justify-content-between align-items-center">
                             <div class="db-info">
-                                <h6>Department</h6>
+                                <h6>Total Employee</h6>
                                 <h3>30+</h3>
                             </div>
                             <div class="db-icon">
@@ -66,7 +66,7 @@
                     <div class="card-body">
                         <div class="db-widgets d-flex justify-content-between align-items-center">
                             <div class="db-info">
-                                <h6>Revenue</h6>
+                                <h6>Department</h6>
                                 <h3>$505</h3>
                             </div>
                             <div class="db-icon">

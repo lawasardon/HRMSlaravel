@@ -247,8 +247,14 @@
                         <li><a href="edit-student.html">Student Edit</a></li>
                     </ul>
                 </li> --}}
-                <li>
-                    <a href="settings.html"><i class="fas fa-cog"></i> <span>Settings</span></a>
+                <li class="submenu {{ request()->routeIs('profile.settings', '') ? 'active' : '' }}">
+                    <a href="#"><i class="far fa-newspaper"></i> <span> Settings</span> <span
+                            class="menu-arrow"></span></a>
+                    <ul>
+                        <li><a href="{{ route('profile.settings') }}"
+                                class="{{ request()->routeIs('profile.settings') ? 'active' : '' }}">Go to Settings</a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>

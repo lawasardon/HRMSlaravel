@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\BirthdayController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NewsController;
@@ -8,6 +7,7 @@ use App\Http\Controllers\LoanController;
 use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\PayslipController;
 use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\BirthdayController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\StaticPagesController;
@@ -26,6 +26,9 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/', [StaticPagesController::class, 'showIndex'])->name('home');
     Route::get('/get/news', [NewsController::class, 'getNewsData'])->name('get.news.data');
+    Route::get('/profile/settings', [AuthController::class, 'profileSettings'])->name('profile.settings');
+    Route::get('/profile/settings/data', [AuthController::class, 'profileSettingsData'])->name('profile.settings.data');
+    Route::post('/update/password', [AuthController::class, 'updatePassword'])->name('update.password');
 
     Route::group(['middleware' => ['role:admin']], function () {
         Route::get('/aqua/department', [DepartmentController::class, 'showAquaDepartment'])->name('show.aqua.department');
