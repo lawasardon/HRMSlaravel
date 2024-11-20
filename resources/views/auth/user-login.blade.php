@@ -11,7 +11,6 @@
                 <div class="login-right">
                     <div class="login-right-wrap">
                         <h1>Welcome to HR System</h1>
-                        {{-- <p class="account-subtitle">Need an account? <a href="register.html">Sign Up</a></p> --}}
                         <h2>Sign in</h2>
 
                         <form method="POST" action="{{ route('login') }}">
@@ -32,7 +31,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Password <span class="login-danger">*</span></label>
-                                <span class="profile-views feather-eye toggle-password"></span>
+                                <span class="profile-views feather-eye toggle-password" id="togglePassword"></span>
                                 <input id="password" type="password"
                                     class="form-control @error('password') is-invalid @enderror" name="password"
                                     required autocomplete="current-password">
@@ -51,7 +50,6 @@
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
-                                {{-- <a href="forgot-password.html">Forgot Password?</a> --}}
                                 @if (Route::has('password.request'))
                                     <a href="{{ route('password.request') }}">
                                         {{ __('Forgot Your Password?') }}
@@ -62,18 +60,6 @@
                                 <button class="btn btn-primary btn-block" type="submit">Login</button>
                             </div>
                         </form>
-
-                        {{-- <div class="login-or">
-                            <span class="or-line"></span>
-                            <span class="span-or">or</span>
-                        </div>
-
-                        <div class="social-login">
-                            <a href="#"><i class="fab fa-google-plus-g"></i></a>
-                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#"><i class="fab fa-twitter"></i></a>
-                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                        </div> --}}
 
                     </div>
                 </div>
@@ -90,6 +76,34 @@
     }
 
     .login-wrapper .loginbox .login-left:after {
-        display: none ;
+        display: none;
+    }
+
+    /* Additional styles for the toggle password icon */
+    .feather-eye {
+        cursor: pointer;
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .form-group {
+        position: relative;
     }
 </style>
+
+<script>
+    // JavaScript for toggle password visibility
+    const togglePassword = document.getElementById("togglePassword");
+    const passwordField = document.getElementById("password");
+
+    togglePassword.addEventListener("click", function() {
+        // Toggle the password visibility
+        const type = passwordField.type === "password" ? "text" : "password";
+        passwordField.type = type;
+
+        // Toggle the eye icon (optional, you can also change it to 'feather-eye-off' if desired)
+        togglePassword.classList.toggle("feather-eye");
+    });
+</script>
