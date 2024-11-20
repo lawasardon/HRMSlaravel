@@ -212,10 +212,13 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="submenu {{ request()->routeIs('show.create.news', '', '') ? 'active' : '' }}">
+                    <li class="submenu {{ request()->routeIs('show.create.news', 'all.news', '') ? 'active' : '' }}">
                         <a href="#"><i class="far fa-newspaper"></i> <span> News</span> <span
                                 class="menu-arrow"></span></a>
                         <ul>
+                            <li><a href="{{ route('all.news') }}"
+                                    class="{{ request()->routeIs('all.news') ? 'active' : '' }}">All News</a>
+                            </li>
                             <li><a href="{{ route('show.create.news') }}"
                                     class="{{ request()->routeIs('show.create.news') ? 'active' : '' }}">Create a Post</a>
                             </li>

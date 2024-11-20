@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\Validator;
 
 class NewsController extends Controller
 {
+    public function allNews()
+    {
+        return view('news.index');
+    }
+
+    public function allNewsData()
+    {
+        $newsList = News::all();
+        return response()->json($newsList);
+    }
     public function showCreate()
     {
         return view('news.create');
@@ -41,6 +51,28 @@ class NewsController extends Controller
         $news = News::with('user')->get();
         return response()->json($news);
     }
+
+    public function deleteNews($id)
+    {
+        // Find the news record by ID
+        $news = News::find($id);
+
+        if ($news) {
+            // If there is an associated image, delete it from the storage
+            if ($news->image) {
+                Storage::disk('public')->delete('news_images/' . $news->image);
+            }
+
+            // Delete the news record from the database
+            $news->delete();
+
+            // Return a success response
+            return response()->json(['message' => 'News deleted successfully!'], 200);
+        } else {
+            return response()->json(['message' => 'News not found.'], 404);
+        }
+    }
+
 
 
 }

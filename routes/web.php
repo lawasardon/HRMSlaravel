@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BirthdayController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NewsController;
@@ -79,6 +80,10 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::get('/news/show/create', [NewsController::class, 'showCreate'])->name('show.create.news');
         Route::post('/news/store', [NewsController::class, 'storeNews'])->name('store.news');
+        Route::get('/all/news', [NewsController::class, 'allNews'])->name('all.news');
+        Route::get('/all/news/data', [NewsController::class, 'allNewsData'])->name('all.news.data');
+        Route::delete('/delete/news/{id}', [NewsController::class, 'deleteNews'])->name('delete.news');
+
         // Route::get('/get/news', [NewsController::class, 'getNewsData'])->name('get.news.data');
 
 
@@ -89,7 +94,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/laminin/loans', [LoanController::class, 'showLamininLoans'])->name('show.laminin.loans');
         Route::get('/laminin/loans/data', [LoanController::class, 'showLamininLoansData'])->name('show.laminin.loans.data');
 
-
+        Route::get('/birthday/data', [BirthdayController::class, 'birthdayData'])->name('birthday.data');
 
 
     });
