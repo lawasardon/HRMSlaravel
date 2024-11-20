@@ -28,6 +28,7 @@ class EmployeeAccountCreated extends Mailable
             ->subject('Your Account Has Been Created')
             ->with([
                 'name' => $this->employee->user->name,
+                'position' => $this->employee->position,
                 'email' => $this->employee->email,
                 'password' => $this->password,
                 'idNumber' => $this->idNumber,

@@ -43,6 +43,21 @@
                                 </div>
                                 <div class="col-12 col-sm-4">
                                     <div class="form-group">
+                                        <label>Position <span class="text-danger">*</span></label>
+                                        <select class="form-control" v-model="position" required>
+                                            <option value="" disabled>Select Position</option>
+                                            <option value="Project Head">Project Head</option>
+                                            <option value="Technical Head">Technical Head</option>
+                                            <option value="Technical Support">Technical Support</option>
+                                            <option value="Tool Keeper">Tool Keeper</option>
+                                            <option value="Driver">Driver</option>
+                                            <option value="HR Support">HR Support</option>
+                                            <option value="Accounting Officer">Accounting Officer</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="form-group">
                                         <label>Phone <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" v-model="phone" required>
                                     </div>
@@ -97,6 +112,7 @@
                 gender: '',
                 birthday: '',
                 religion: '',
+                position: '',
             },
             methods: {
                 saveEmployee() {
@@ -120,6 +136,7 @@
                             gender: this.gender,
                             birthday: this.birthday,
                             religion: this.religion,
+                            position: this.position,
                         })
                         .then(response => {
                             Swal.fire({

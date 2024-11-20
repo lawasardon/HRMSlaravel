@@ -33,6 +33,7 @@ class DepartmentController extends Controller
             'gender' => 'required|string',
             'birthday' => 'required|date',
             'religion' => 'required|string|max:255',
+            'position' => 'required|string|max:255',
         ]);
 
         $year = date('y');
@@ -95,6 +96,7 @@ class DepartmentController extends Controller
             'gender' => 'required|string',
             'birthday' => 'required|date',
             'religion' => 'required|string|max:255',
+            'position' => 'required|string|max:255',
         ]);
 
         $year = date('y');

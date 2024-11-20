@@ -146,6 +146,15 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="submenu {{ request()->routeIs('view.payslip', '') ? 'active' : '' }}">
+                        <a href="#"><i class="fas fa-money-check-alt"></i> <span> Payslip</span> <span
+                                class="menu-arrow"></span></a>
+                        <ul>
+                            <li><a href="{{ route('view.payslip') }}"
+                                    class="{{ request()->routeIs('view.payslip') ? 'active' : '' }}">My Payslip</a>
+                            </li>
+                        </ul>
+                    </li>
                 @endhasrole
                 {{-- @hasrole('admin')
                     <li class="submenu">

@@ -22,6 +22,7 @@ class Employee extends Model
         'gender',
         'birthday',
         'religion',
+        'position',
     ];
 
     public function user()

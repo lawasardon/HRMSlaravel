@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\LeaveController;
+use App\Http\Controllers\PayslipController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DepartmentController;
@@ -106,6 +107,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/store/loan', [LoanController::class, 'storeLoan'])->name('store.loan');
 
         Route::get('/my/attendance', [AttendanceController::class, 'myAttendance'])->name('my.attendance');
+
+        Route::get('/view/payslip', [PayslipController::class, 'viewPayslip'])->name('view.payslip');
+        Route::get('/payslip/data', [PayslipController::class, 'payslipData'])->name('payslip.data');
+        Route::get('/download/payslips', [PayslipController::class, 'downloadPayslip'])->name('download.payslip');
 
     });
 });
