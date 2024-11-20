@@ -21,10 +21,10 @@ class RoleSeeder extends Seeder
         Role::create(['name' => 'employee']);
 
         $admin = new User();
-        $admin->name = 'Admin';
-        $admin->email = 'admin@gmail.com';
+        $admin->name = 'Cluster Head';
+        $admin->email = 'clusterhead@gmail.com';
         $admin->email_verified_at = now();
-        $admin->password = bcrypt('admin@gmail.com');
+        $admin->password = bcrypt('clusterhead@gmail.com');
         $admin->save();
         $admin->assignRole('admin');
 
