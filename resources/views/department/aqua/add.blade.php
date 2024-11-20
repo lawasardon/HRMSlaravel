@@ -151,14 +151,27 @@
                         })
                         .catch(error => {
                             console.error('Error adding employee', error);
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'An error occurred',
-                                text: error.response?.data?.message ||
-                                    'An error occurred while adding the employee.',
-                                allowOutsideClick: false,
-                                allowEscapeKey: false,
-                            });
+                            if (error.response && error.response.data.errors) {
+                                const emailError = error.response.data.errors.email;
+                                if (emailError) {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Email already exists',
+                                        text: emailError[0],
+                                        allowOutsideClick: false,
+                                        allowEscapeKey: false,
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'An error occurred',
+                                        text: error.response?.data?.message ||
+                                            'An error occurred while adding the employee.',
+                                        allowOutsideClick: false,
+                                        allowEscapeKey: false,
+                                    });
+                                }
+                            }
                         });
                 }
             }
