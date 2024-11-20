@@ -29,6 +29,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/profile/settings', [AuthController::class, 'profileSettings'])->name('profile.settings');
     Route::get('/profile/settings/data', [AuthController::class, 'profileSettingsData'])->name('profile.settings.data');
     Route::post('/update/password', [AuthController::class, 'updatePassword'])->name('update.password');
+    Route::post('/update/profile/picture', [AuthController::class, 'updateProfilePicture'])->name('update.profile.picture');
 
     Route::group(['middleware' => ['role:admin']], function () {
         Route::get('/aqua/department', [DepartmentController::class, 'showAquaDepartment'])->name('show.aqua.department');

@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 
 class AuthController extends Controller
@@ -67,4 +68,33 @@ class AuthController extends Controller
         ]);
     }
 
+    public function updateProfilePicture(Request $request)
+    {
+        $request->validate([
+            'profile_picture' => 'required|mimes:jpeg,png,jpg,gif|max:2048'
+        ]);
+
+        $user = Auth::user();
+
+        // Delete old profile picture if exists
+        if ($user->profile_picture && Storage::exists('public/user_images/' . $user->profile_picture)) {
+            Storage::delete('public/user_images/' . $user->profile_picture);
+        }
+
+        // Generate unique filename
+        $filename = uniqid() . '.' . $request->file('profile_picture')->getClientOriginalExtension();
+
+        // Store new profile picture
+        $path = $request->file('profile_picture')->storeAs('public/user_images', $filename);
+
+        // Update user's profile picture in database
+        $user->profile_picture = $filename;
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'profile_picture' => $filename,
+            'message' => 'Profile picture updated successfully'
+        ]);
+    }
 }
