@@ -17,25 +17,15 @@
         </div>
 
         <div class="student-group-form">
-            <div class="row">
-                <div class="col-lg-3 col-md-6">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search by ID ...">
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search by Name ...">
-                    </div>
-                </div>
+            <div class="row justify-content-end">
                 <div class="col-lg-4 col-md-6">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search by Phone ...">
+                        <input type="text" v-model="searchQuery" class="form-control" placeholder="Search by Name ...">
                     </div>
                 </div>
                 <div class="col-lg-2">
                     <div class="search-student-btn">
-                        <button type="button" class="btn btn-primary">Search</button>
+                        <button type="button" class="btn btn-primary" @click="searchEmployee">Search</button>
                     </div>
                 </div>
             </div>
@@ -73,41 +63,26 @@
                                         <th>Time In</th>
                                         <th>Time Out</th>
                                         <th>Status</th>
-                                        {{-- <th class="text-end">Action</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <!-- Show "No results found" message if employeeList is empty -->
+                                    <tr v-if="employeeList.length === 0">
+                                        <td colspan="7" class="text-center">@{{ noResultsMessage || 'No results found.' }}</td>
+                                    </tr>
+                                    <!-- Show employees if available -->
                                     <tr v-for="data in employeeList" :key="data.id">
                                         <td>@{{ data.id_number }}</td>
-                                        <td>
-                                            <h2 class="table-avatar">
-                                                {{-- <a href="student-details.html" class="avatar avatar-sm me-2"><img
-                                                        class="avatar-img rounded-circle"
-                                                        src="assets/img/profiles/avatar-01.jpg" alt="User Image"></a> --}}
-                                                <a href="student-details.html">@{{ data.name }}</a>
-                                            </h2>
-                                        </td>
+                                        <td>@{{ data.name }} </td>
                                         <td>@{{ departmentName(data) }}</td>
                                         <td>@{{ formatDate(data.date) }}</td>
                                         <td>@{{ data.time_in }}</td>
-                                        {{-- <td>@{{ data.time_out }}</td> --}}
                                         <td>@{{ formatTimeTo12Hour(data.time_out) }}</td>
-
                                         <td>
                                             <span :class="getAttendanceStatus(data.status)">
                                                 @{{ data.status }}
                                             </span>
                                         </td>
-                                        {{-- <td class="text-end">
-                                            <div class="actions">
-                                                <a href="javascript:;" class="btn btn-sm bg-success-light me-2">
-                                                    <i class="feather-eye"></i>
-                                                </a>
-                                                <a href="edit-student.html" class="btn btn-sm bg-danger-light">
-                                                    <i class="feather-edit"></i>
-                                                </a>
-                                            </div>
-                                        </td> --}}
                                     </tr>
                                 </tbody>
                             </table>
@@ -126,6 +101,8 @@
             el: '#allEmployeeListOfAqua',
             data: {
                 employeeList: [],
+                searchQuery: '', // Store the search query
+                noResultsMessage: '', // Store the no results message
             },
             mounted() {
                 this.allEmployeeOfAqua();
@@ -141,6 +118,27 @@
                                 error);
                         });
                 },
+
+                searchEmployee() {
+                    this.noResultsMessage = ''; // Reset the no results message before search
+
+                    axios.post("{{ route('attendance.aqua.search') }}", {
+                            searchQuery: this.searchQuery
+                        })
+                        .then(response => {
+                            if (response.data.length === 0) {
+                                this.noResultsMessage = 'No results found.'; // Set the no results message
+                                this.employeeList = []; // Clear the employee list
+                            } else {
+                                this.employeeList = response.data; // Populate with the search results
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error during search', error.response ? error.response.data : error);
+                        });
+                },
+
+                // Get the attendance status for styling
                 getAttendanceStatus(status) {
                     switch (status) {
                         case 'Not Late':
@@ -151,6 +149,7 @@
                             return '';
                     }
                 },
+
                 formatDate(dateString) {
                     const options = {
                         year: 'numeric',
@@ -159,6 +158,7 @@
                     };
                     return new Date(dateString).toLocaleDateString('en-US', options);
                 },
+
                 formatTimeTo12Hour(timeString) {
                     const timeParts = timeString.split(':');
                     const date = new Date();
@@ -178,11 +178,9 @@
                         case 'aqua':
                             return 'Acqua';
                         default:
-                            return data.department; // return the original department name for other cases
+                            return data.department;
                     }
                 }
-
-
             }
         });
     </script>

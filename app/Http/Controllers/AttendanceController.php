@@ -93,4 +93,66 @@ class AttendanceController extends Controller
 
         return view('attendance.employee.index', compact('attendance', 'month', 'year'));
     }
+
+    public function attendanceAquaSearch(Request $request)
+    {
+        $request->validate([
+            'searchQuery' => 'nullable|string|max:255',
+        ]);
+
+        $searchQuery = $request->input('searchQuery');
+
+        $employees = \App\Models\Attendance::query()
+            ->where('department', 'aqua')
+            ->where(function ($query) use ($searchQuery) {
+                $query->where('name', 'LIKE', '%' . $searchQuery . '%');
+            })
+            ->get();
+
+        return response()->json($employees);
+    }
+
+    public function attendanceLamininSearch(Request $request)
+    {
+        $request->validate([
+            'searchQuery' => 'nullable|string|max:255',
+        ]);
+
+        $searchQuery = $request->input('searchQuery');
+
+        $employees = \App\Models\Attendance::query()
+            ->where('department', 'laminin')
+            ->where(function ($query) use ($searchQuery) {
+                $query->where('name', 'LIKE', '%' . $searchQuery . '%');
+            })
+            ->get();
+
+        return response()->json($employees);
+    }
+
+    public function attendanceSearchAllEmployee(Request $request)
+    {
+        $request->validate([
+            'searchQuery' => 'nullable|string|max:255',
+        ]);
+
+        $searchQuery = $request->input('searchQuery');
+
+        $employees = \App\Models\Attendance::query()
+            ->where(function ($query) use ($searchQuery) {
+                $query->where('name', 'LIKE', '%' . $searchQuery . '%');
+            })
+            ->where(function ($query) {
+                $query->where('department', 'laminin')
+                    ->orWhere('department', 'aqua');
+            })
+            ->get();
+
+        return response()->json($employees);
+    }
+
+
+
+
+
 }

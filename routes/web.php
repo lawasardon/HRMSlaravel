@@ -48,6 +48,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/laminin/add/employee', [DepartmentController::class, 'lamininAddEmployee'])->name('laminin.add.employee');
         Route::post('/laminin/store/employee', [DepartmentController::class, 'lamininStoreEmployee'])->name('laminin.store.employee');
 
+        Route::post('/department/aqua/search', [DepartmentController::class, 'departmentAquaSearch'])->name('department.aqua.search');
+        Route::post('/department/laminin/search', [DepartmentController::class, 'departmentLamininSearch'])->name('department.laminin.search');
+
         Route::get('/aqua/leave/list', [LeaveController::class, 'aquaLeaveList'])->name('aqua.leave.list');
         Route::get('/aqua/leave/list/data', [LeaveController::class, 'aquaLeaveListData'])->name('aqua.leave.list.data');
         Route::post('/aqua/leave/list/update/{id}', [LeaveController::class, 'aquaLeaveListUpdate'])->name('aqua.leave.list.update');
@@ -67,6 +70,11 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/attendance/list/aqua/data', [AttendanceController::class, 'attendanceListAquaData'])->name('attendance.list.aqua.data');
         Route::get('/attendance/list/laminin', [AttendanceController::class, 'attendanceListLaminin'])->name('attendance.list.laminin');
         Route::get('/attendance/list/aqua/laminin', [AttendanceController::class, 'attendanceListLamininData'])->name('attendance.list.laminin.data');
+
+        Route::post('/attendance/aqua/search', [AttendanceController::class, 'attendanceAquaSearch'])->name('attendance.aqua.search');
+        Route::post('/attendance/laminin/search', [AttendanceController::class, 'attendanceLamininSearch'])->name('attendance.laminin.search');
+        Route::post('/attendance/search/all/employee', [AttendanceController::class, 'attendanceSearchAllEmployee'])->name('attendance.search.all.employee');
+
 
         Route::get('/all/employee/rates', [PayrollController::class, 'showAllEmployeeRates'])->name('show.all.employee.rates');
         Route::get('/all/employee/rates/data', [PayrollController::class, 'showAllEmployeeRatesData'])->name('show.all.employee.rates.data');

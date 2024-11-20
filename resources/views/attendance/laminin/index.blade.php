@@ -17,25 +17,15 @@
         </div>
 
         <div class="student-group-form">
-            <div class="row">
-                <div class="col-lg-3 col-md-6">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search by ID ...">
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search by Name ...">
-                    </div>
-                </div>
+            <div class="row justify-content-end">
                 <div class="col-lg-4 col-md-6">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search by Phone ...">
+                        <input type="text" v-model="searchQuery" class="form-control" placeholder="Search by Name ...">
                     </div>
                 </div>
                 <div class="col-lg-2">
                     <div class="search-student-btn">
-                        <button type="button" class="btn btn-primary">Search</button>
+                        <button type="button" class="btn btn-primary" @click="searchEmployee">Search</button>
                     </div>
                 </div>
             </div>
@@ -77,16 +67,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <!-- Show "No results found" message if employeeList is empty -->
+                                    <tr v-if="employeeList.length === 0">
+                                        <td colspan="7" class="text-center">@{{ noResultsMessage || 'No results found.' }}</td>
+                                    </tr>
+                                    <!-- Show employees if available -->
                                     <tr v-for="data in employeeList" :key="data.id">
                                         <td>@{{ data.id_number }}</td>
-                                        <td>
-                                            <h2 class="table-avatar">
-                                                {{-- <a href="student-details.html" class="avatar avatar-sm me-2"><img
-                                                        class="avatar-img rounded-circle"
-                                                        src="assets/img/profiles/avatar-01.jpg" alt="User Image"></a> --}}
-                                                <a href="student-details.html">@{{ data.name }}</a>
-                                            </h2>
-                                        </td>
+                                        <td> @{{ data.name }} </td>
                                         <td>@{{ data.department }}</td>
                                         <td>@{{ formatDate(data.date) }}</td>
                                         <td>@{{ data.time_in }}</td>
@@ -125,6 +113,8 @@
             el: '#allEmployeeListOfLaminin',
             data: {
                 employeeList: [],
+                searchQuery: '', // Store the search query
+                noResultsMessage: '', // Store the no results message
             },
             mounted() {
                 this.allEmployeeOfAqua();
@@ -138,6 +128,24 @@
                         .catch(error => {
                             console.error('Error fetching employee', error.response ? error.response.data :
                                 error);
+                        });
+                },
+                searchEmployee() {
+                    this.noResultsMessage = ''; // Reset the no results message before search
+
+                    axios.post("{{ route('attendance.laminin.search') }}", {
+                            searchQuery: this.searchQuery
+                        })
+                        .then(response => {
+                            if (response.data.length === 0) {
+                                this.noResultsMessage = 'No results found.'; // Set the no results message
+                                this.employeeList = []; // Clear the employee list
+                            } else {
+                                this.employeeList = response.data; // Populate with the search results
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error during search', error.response ? error.response.data : error);
                         });
                 },
                 getAttendanceStatus(status) {

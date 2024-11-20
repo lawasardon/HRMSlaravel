@@ -14,12 +14,12 @@
         </a>
     </div>
 
-    <div class="top-nav-search">
+    {{-- <div class="top-nav-search">
         <form>
             <input type="text" class="form-control" placeholder="Search here">
             <button class="btn" type="submit"><i class="fas fa-search"></i></button>
         </form>
-    </div>
+    </div> --}}
     <a class="mobile_btn" id="mobile_btn">
         <i class="fas fa-bars"></i>
     </a>
@@ -128,11 +128,11 @@
             </div>
         </li> --}}
 
-        <li class="nav-item zoom-screen me-2">
+        {{-- <li class="nav-item zoom-screen me-2">
             <a href="#" class="nav-link header-nav-list win-maximize">
                 <img src="{{ asset('admin/assets/img/icons/header-icon-04.svg') }}" alt="">
             </a>
-        </li>
+        </li> --}}
 
         <li class="nav-item dropdown has-arrow new-user-menus">
             <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">

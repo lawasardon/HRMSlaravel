@@ -130,4 +130,46 @@ class DepartmentController extends Controller
 
         return response()->json($employeeList);
     }
+
+    public function departmentAquaSearch(Request $request)
+    {
+        $request->validate([
+            'searchQuery' => 'nullable|string|max:255',
+        ]);
+
+        $searchQuery = $request->input('searchQuery');
+
+        $employees = \App\Models\Employee::query()
+            ->where('department_id', 1)
+            ->with('department')
+            ->where(function ($query) use ($searchQuery) {
+                $query->where('name', 'LIKE', '%' . $searchQuery . '%')
+                    ->orWhere('email', 'LIKE', '%' . $searchQuery . '%')
+                    ->orWhere('phone', 'LIKE', '%' . $searchQuery . '%');
+            })
+            ->get();
+
+        return response()->json($employees);
+    }
+
+    public function departmentLamininSearch(Request $request)
+    {
+        $request->validate([
+            'searchQuery' => 'nullable|string|max:255',
+        ]);
+
+        $searchQuery = $request->input('searchQuery');
+
+        $employees = \App\Models\Employee::query()
+            ->where('department_id', 2)
+            ->with('department')
+            ->where(function ($query) use ($searchQuery) {
+                $query->where('name', 'LIKE', '%' . $searchQuery . '%')
+                    ->orWhere('email', 'LIKE', '%' . $searchQuery . '%')
+                    ->orWhere('phone', 'LIKE', '%' . $searchQuery . '%');
+            })
+            ->get();
+
+        return response()->json($employees);
+    }
 }
